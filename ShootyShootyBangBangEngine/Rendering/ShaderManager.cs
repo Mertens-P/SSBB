@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShootyShootyBangBangEngine
+namespace ShootyShootyBangBangEngine.Rendering
 {
     public class ShaderManager
     {

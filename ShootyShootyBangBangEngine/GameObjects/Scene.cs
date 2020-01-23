@@ -24,12 +24,6 @@ namespace ShootyShootyBangBangEngine.GameObjects
             return null;
         }
 
-        public void OnRender(RenderControllers controllers, SSBBE.RenderSettings renderSettings)
-        {
-            foreach (var gameObjectKv in m_gameObjects)
-                gameObjectKv.Value.OnRender(controllers, renderSettings);
-        }
-
         public virtual void OnUpdate(double dt, BaseControllers controllers)
         {
             foreach (var gameObjectKv in m_gameObjects)

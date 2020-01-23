@@ -3,6 +3,7 @@ using ShootyShootyBangBangEngine;
 using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
+using ShootyShootyBangBangEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +17,19 @@ namespace ShootyShootyBangBang
         protected float m_movementSpeed = 1000.0f;
         TexturedQuad m_visual;
 
-        public SSBBCharacter(Vector2 pos, Vector2 dimensions, string textureFilePath, Shader shader)
+        public SSBBCharacter(RenderControllers controllers, Vector2 pos, Vector2 dimensions, Texture texture, Shader shader)
         {
             GetComponents().AddComponent(new ComponentTransform(pos));
-            m_visual = new TexturedQuad(pos, dimensions, textureFilePath, shader);
+            m_visual = new TexturedQuad(dimensions, texture, shader);
+            var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
+            renderPipeLine.AddRenderable(m_visual, "Characters", 0);
         }
 
-        public override void OnRender(RenderControllers controllers, SSBBE.RenderSettings renderSettings)
+        public override void OnUpdate(double dt, BaseControllers controllers)
         {
-            base.OnRender(controllers, renderSettings);
+            base.OnUpdate(dt, controllers);
             var transComp = GetComponents().GetComponent<ComponentTransform>();
-            m_visual.OnRender(transComp.GetPosition(), renderSettings, controllers.GetCamera());
+            m_visual.SetPosition(transComp.GetPosition());
         }
 
         public override void OnDelete()

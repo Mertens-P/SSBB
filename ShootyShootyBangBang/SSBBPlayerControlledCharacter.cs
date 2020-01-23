@@ -4,6 +4,7 @@ using ShootyShootyBangBangEngine;
 using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
+using ShootyShootyBangBangEngine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace ShootyShootyBangBang
 {
     class SSBBPlayerControlledCharacter : SSBBCharacter
     {
-        public SSBBPlayerControlledCharacter(Vector2 pos, Vector2 dimensions, string textureFilePath, Shader shader)
-            : base(pos, dimensions, textureFilePath, shader)
+        public SSBBPlayerControlledCharacter(RenderControllers controllers, Vector2 pos, Vector2 dimensions, Texture texture, Shader shader)
+            : base(controllers, pos, dimensions, texture, shader)
         {
         }
 

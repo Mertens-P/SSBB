@@ -35,7 +35,7 @@ namespace ShootyShootyBangBangEngine
         public virtual void OnRenderFrame(RenderSettings renderSettings)
         {
             var renderControllers = m_controllers as RenderControllers;
-            m_controllers.GetRootScene().OnRender(renderControllers, renderSettings);
+            renderControllers.GetRenderPipeline().OnRender(renderControllers, renderSettings);
         }
     }
 }

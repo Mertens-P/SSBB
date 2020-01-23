@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShootyShootyBangBangEngine.Rendering;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ShootyShootyBangBang
     {
         static void Main(string[] args)
         {
-            var controllers = new ShootyShootyBangBangEngine.Controllers.RenderControllers();
+            var controllers = new ShootyShootyBangBangEngine.Controllers.RenderControllers(new LayeredRenderPipeline());
             controllers.SetCamera(new ShootyShootyBangBangEngine.GameObjects.Cameras.Camera(new OpenTK.Vector2()));
             using (ShootyShootyBangBangEngine.SSBBE engine = new ShootyShootyBangBangEngine.SSBBE(new ShootyShootyBangBangGame(controllers), 800, 600, "ShootyShootyBangBang"))
             {

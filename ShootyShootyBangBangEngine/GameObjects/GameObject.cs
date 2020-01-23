@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShootyShootyBangBangEngine.GameObjects
 {
-    public abstract class GameObject
+    public class GameObject
     {
         EntityComponentManager m_components = new EntityComponentManager();
         Guid m_id;
@@ -17,7 +17,6 @@ namespace ShootyShootyBangBangEngine.GameObjects
         public EntityComponentManager GetComponents() { return m_components; }
         public GameObject() { m_id = Guid.NewGuid(); }
         public virtual void OnUpdate(double dt, BaseControllers controllers) { m_components.Update(this, dt); }
-        public virtual void OnRender(RenderControllers controllers, SSBBE.RenderSettings renderSettings) { }
-        public abstract void OnDelete();
+        public virtual void OnDelete() { }
     }
 }

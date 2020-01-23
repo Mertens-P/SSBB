@@ -7,7 +7,7 @@ using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
-namespace ShootyShootyBangBangEngine
+namespace ShootyShootyBangBangEngine.Rendering
 {
     public class Texture
     {

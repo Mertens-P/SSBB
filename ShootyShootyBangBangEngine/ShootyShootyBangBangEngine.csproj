@@ -97,13 +97,15 @@
     <Compile Include="Network\NetClientServer.cs" />
     <Compile Include="Network\NetServer.cs" />
     <Compile Include="Network\RpcDispatcher.cs" />
-    <Compile Include="Shader.cs" />
-    <Compile Include="TextureManager.cs" />
-    <Compile Include="ShaderManager.cs" />
+    <Compile Include="Rendering\LayeredRenderPipeLine.cs" />
+    <Compile Include="Rendering\RenderPipelineBase.cs" />
+    <Compile Include="Rendering\Shader.cs" />
+    <Compile Include="Rendering\TextureManager.cs" />
+    <Compile Include="Rendering\ShaderManager.cs" />
     <Compile Include="SSBBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Texture.cs" />
-    <Compile Include="GameObjects\TexturedQuad.cs" />
+    <Compile Include="Rendering\Texture.cs" />
+    <Compile Include="Rendering\TexturedQuad.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

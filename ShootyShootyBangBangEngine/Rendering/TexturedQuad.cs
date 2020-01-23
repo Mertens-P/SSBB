@@ -1,15 +1,16 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using ShootyShootyBangBangEngine.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShootyShootyBangBangEngine.GameObjects
+namespace ShootyShootyBangBangEngine.Rendering
 {
-    public class TexturedQuad
+    public class TexturedQuad : Renderable
     {
         int m_vertexBufferObjectHandle;
         int m_vertexArrayObjectHandle;
@@ -27,18 +28,20 @@ namespace ShootyShootyBangBangEngine.GameObjects
         };
         Shader m_shader;
         Texture m_texture;
-        
+
+        Vector2 m_position;
         Vector2 m_dimensions;
         float m_textureRepeatScale = 1;
 
         static int s_vertexStride = 5;
         
+        public void SetPosition(Vector2 position)           {   m_position = position; }
         public void SetDimensions(Vector2 dimensions)       {   m_dimensions = dimensions;  }
         public void SetRepeating(float textureRepeatScale)  {   m_textureRepeatScale = textureRepeatScale;  }
 
-        public TexturedQuad(Vector2 pos, Vector2 dimensions, string textureFilePath, Shader shader)
+        public TexturedQuad(Vector2 dimensions, Texture texture, Shader shader)
         {
-            m_texture = new Texture(textureFilePath);
+            m_texture = texture;
             m_vertexBufferObjectHandle = GL.GenBuffer();
             m_shader = shader;
             m_vertexArrayObjectHandle = GL.GenVertexArray();
@@ -61,12 +64,12 @@ namespace ShootyShootyBangBangEngine.GameObjects
             
             m_dimensions = dimensions;
         }
-
-        public void OnRender(Vector2 position, SSBBE.RenderSettings renderSettings, Cameras.Camera camera)
+        
+        public override void OnRender(SSBBE.RenderSettings renderSettings, GameObjects.Cameras.Camera camera)
         {
             m_texture.Use();
             m_shader.Use();
-            i_updateVertices(position, renderSettings, camera);
+            i_updateVertices(m_position, renderSettings, camera);
 
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             GL.Enable(EnableCap.Blend);
@@ -89,27 +92,27 @@ namespace ShootyShootyBangBangEngine.GameObjects
             return vertexId * s_vertexStride;
         }
 
-        void i_updateVertices(Vector2 position, SSBBE.RenderSettings renderSettings, Cameras.Camera camera)
+        void i_updateVertices(Vector2 position, SSBBE.RenderSettings renderSettings, GameObjects.Cameras.Camera camera)
         {
             Vector2 cameraPos = new Vector2();
             if (camera != null)
-                cameraPos = camera.GetComponents().GetComponent<Components.ComponentTransform>().GetPosition();
+                cameraPos = camera.GetComponents().GetComponent<GameObjects.Components.ComponentTransform>().GetPosition();
 
             var halfDim = m_dimensions * 0.5f;
-            m_vertices[i_getVertexStartId(0) + 0] = (position.X + m_dimensions.X - cameraPos.X) * renderSettings.InvWidth;
-            m_vertices[i_getVertexStartId(0) + 1] = (position.Y + m_dimensions.Y - cameraPos.Y) * renderSettings.InvHeight;
+            m_vertices[i_getVertexStartId(0) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
+            m_vertices[i_getVertexStartId(0) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
             m_vertices[i_getVertexStartId(0) + 3] = m_textureRepeatScale;
             m_vertices[i_getVertexStartId(0) + 4] = m_textureRepeatScale;
 
-            m_vertices[i_getVertexStartId(1) + 0] = (position.X + m_dimensions.X - cameraPos.X) * renderSettings.InvWidth;
-            m_vertices[i_getVertexStartId(1) + 1] = (position.Y - m_dimensions.Y - cameraPos.Y) * renderSettings.InvHeight;
+            m_vertices[i_getVertexStartId(1) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
+            m_vertices[i_getVertexStartId(1) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
             m_vertices[i_getVertexStartId(1) + 3] = m_textureRepeatScale;
 
-            m_vertices[i_getVertexStartId(2) + 0] = (position.X - m_dimensions.X - cameraPos.X) * renderSettings.InvWidth;
-            m_vertices[i_getVertexStartId(2) + 1] = (position.Y - m_dimensions.Y - cameraPos.Y) * renderSettings.InvHeight;
+            m_vertices[i_getVertexStartId(2) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
+            m_vertices[i_getVertexStartId(2) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
 
-            m_vertices[i_getVertexStartId(3) + 0] = (position.X - m_dimensions.X - cameraPos.X) * renderSettings.InvWidth;
-            m_vertices[i_getVertexStartId(3) + 1] = (position.Y + m_dimensions.Y - cameraPos.Y) * renderSettings.InvHeight;
+            m_vertices[i_getVertexStartId(3) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
+            m_vertices[i_getVertexStartId(3) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
             m_vertices[i_getVertexStartId(3) + 4] = m_textureRepeatScale;
         }
     }
