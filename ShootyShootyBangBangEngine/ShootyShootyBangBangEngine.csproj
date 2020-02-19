@@ -84,6 +84,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\Cameras\FollowCamera.cs" />
     <Compile Include="GameObjects\Cameras\Camera.cs" />
+    <Compile Include="GameObjects\Components\ComponentAiSystem.cs" />
     <Compile Include="GameObjects\Components\ComponentTransform.cs" />
     <Compile Include="GameObjects\EntityComponentManager.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Rendering\LayeredRenderPipeLine.cs" />
     <Compile Include="Rendering\RenderPipelineBase.cs" />
     <Compile Include="Rendering\Shader.cs" />
+    <Compile Include="Rendering\Sprite.cs" />
     <Compile Include="Rendering\TextureManager.cs" />
     <Compile Include="Rendering\ShaderManager.cs" />
     <Compile Include="SSBBE.cs" />

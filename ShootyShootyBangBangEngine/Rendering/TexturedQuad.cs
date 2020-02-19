@@ -31,15 +31,29 @@ namespace ShootyShootyBangBangEngine.Rendering
 
         Vector2 m_position;
         Vector2 m_dimensions;
-        float m_textureRepeatScale = 1;
+        Vector2 m_offset;
+        Vector2 m_uvScale = new Vector2(1, 1);
+        Vector2 m_uvOffset = new Vector2();
 
         static int s_vertexStride = 5;
         
         public void SetPosition(Vector2 position)           {   m_position = position; }
         public void SetDimensions(Vector2 dimensions)       {   m_dimensions = dimensions;  }
-        public void SetRepeating(float textureRepeatScale)  {   m_textureRepeatScale = textureRepeatScale;  }
+        public void SetRepeating(float textureRepeatScale)  { m_uvScale = new Vector2(textureRepeatScale, textureRepeatScale);  }
+        public void SetUvScale(Vector2 uvScale)             { m_uvScale = uvScale; }
+        public void SetUvOffset(Vector2 uvOffset)           { m_uvOffset = uvOffset; }
 
         public TexturedQuad(Vector2 dimensions, Texture texture, Shader shader)
+        {
+            i_init(dimensions, new Vector2(), texture, shader);
+        }
+
+        public TexturedQuad(Vector2 dimensions, Vector2 offset, Texture texture, Shader shader)
+        {
+            i_init(dimensions, offset, texture, shader);
+        }
+
+        void i_init(Vector2 dimensions, Vector2 offset, Texture texture, Shader shader)
         {
             m_texture = texture;
             m_vertexBufferObjectHandle = GL.GenBuffer();
@@ -61,8 +75,9 @@ namespace ShootyShootyBangBangEngine.Rendering
             var ElementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, m_indices.Length * sizeof(uint), m_indices, BufferUsageHint.StaticDraw);
-            
+
             m_dimensions = dimensions;
+            m_offset = offset;
         }
         
         public override void OnRender(SSBBE.RenderSettings renderSettings, GameObjects.Cameras.Camera camera)
@@ -98,22 +113,27 @@ namespace ShootyShootyBangBangEngine.Rendering
             if (camera != null)
                 cameraPos = camera.GetComponents().GetComponent<GameObjects.Components.ComponentTransform>().GetPosition();
 
+            position += m_offset;
             var halfDim = m_dimensions * 0.5f;
             m_vertices[i_getVertexStartId(0) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(0) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(0) + 3] = m_textureRepeatScale;
-            m_vertices[i_getVertexStartId(0) + 4] = m_textureRepeatScale;
+            m_vertices[i_getVertexStartId(0) + 3] = m_uvOffset.X + m_uvScale.X;
+            m_vertices[i_getVertexStartId(0) + 4] = m_uvOffset.Y + m_uvScale.Y;
 
             m_vertices[i_getVertexStartId(1) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(1) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(1) + 3] = m_textureRepeatScale;
+            m_vertices[i_getVertexStartId(1) + 3] = m_uvOffset.X + m_uvScale.X;
+            m_vertices[i_getVertexStartId(1) + 4] = m_uvOffset.Y;
 
             m_vertices[i_getVertexStartId(2) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(2) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
+            m_vertices[i_getVertexStartId(2) + 3] = m_uvOffset.X;
+            m_vertices[i_getVertexStartId(2) + 4] = m_uvOffset.Y;
 
             m_vertices[i_getVertexStartId(3) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(3) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(3) + 4] = m_textureRepeatScale;
+            m_vertices[i_getVertexStartId(3) + 3] = m_uvOffset.X;
+            m_vertices[i_getVertexStartId(3) + 4] = m_uvOffset.Y + m_uvScale.Y;
         }
     }
 }

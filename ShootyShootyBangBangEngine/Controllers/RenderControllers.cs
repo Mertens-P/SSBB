@@ -36,9 +36,10 @@ namespace ShootyShootyBangBangEngine.Controllers
             m_shaderManager.OnUnload();
         }
 
-        public void UpdateInput()
+        public void OnUpdate(double dt)
         {
             m_input = Keyboard.GetState();
+            GetRenderPipeline().OnUpdate(this, dt);
         }
     }
 }

@@ -17,4 +17,12 @@ namespace ShootyShootyBangBangEngine.Helpers
             return (key != null && @this.TryGetValue(key, out value)) ? value : defaultValue;
         }
     }
+
+    public class MathHelpers
+    {
+        static public float Lerp(float x, float y, float f)
+        {
+            return x + (y - x) * f;
+        }
+    }
 }
