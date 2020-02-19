@@ -5,3 +5,8 @@ ShootyShootyBangBangEngine/bin/
 ShootyShootyBangBang/obj/
 ShootyShootyBangBang/bin/
 .vs/ShootyShootyBangBang/v15/
+.vs/ShootyShootyBangBang/v16/
+ShootyShootyBangBangEngine/x64/
+ShootyShootyBangBangEngine/x86/
+ShootyShootyBangBangEngine/ENetX64.dll
+ShootyShootyBangBangEngine/ENetX86.dll
