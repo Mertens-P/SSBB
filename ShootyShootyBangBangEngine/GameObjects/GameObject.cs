@@ -16,7 +16,7 @@ namespace ShootyShootyBangBangEngine.GameObjects
         public Guid GetId() { return m_id; }
         public EntityComponentManager GetComponents() { return m_components; }
         public GameObject() { m_id = Guid.NewGuid(); }
-        public virtual void OnUpdate(double dt, BaseControllers controllers) { m_components.Update(this, dt); }
+        public virtual void OnUpdate(double dt, BaseControllers controllers) { m_components.Update(controllers, this, dt); }
         public virtual void OnDelete() { }
     }
 }

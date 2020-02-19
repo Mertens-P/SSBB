@@ -45,7 +45,7 @@ namespace ShootyShootyBangBang
         {
             base.OnUpdateFrame(dt);
             var renderControllers = m_controllers as ShootyShootyBangBangEngine.Controllers.RenderControllers;
-            renderControllers.UpdateInput();
+            renderControllers.OnUpdate(dt);
             if (renderControllers.GetInput().IsKeyDown(Key.Escape))
             {
                 m_isRunning = false;

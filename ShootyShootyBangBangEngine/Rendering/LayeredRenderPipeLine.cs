@@ -72,6 +72,19 @@ namespace ShootyShootyBangBangEngine.Rendering
             }
         }
 
+        public override void OnUpdate(RenderControllers controllers, double dt)
+        {
+            var camera = controllers.GetCamera();
+            foreach (var layerKv in m_layers)
+            {
+                foreach (var depthKv in layerKv.Value.Objects)
+                {
+                    foreach (var obj in depthKv.Value)
+                        obj.OnUpdate(controllers, dt);
+                }
+            }
+        }
+
         public override void OnRender(RenderControllers controllers, SSBBE.RenderSettings renderSettings)
         {
             var camera = controllers.GetCamera();

@@ -14,7 +14,7 @@ namespace ShootyShootyBangBangEngine.GameObjects
         public class EntityComponentBase
         {
             public virtual void Init() { }
-            public virtual void Tick(GameObject owner, double dt) { }
+            public virtual void Tick(Controllers.BaseControllers controllers, GameObject owner, double dt) { }
             public virtual void CleanUp() { }
 
             public override string ToString()
@@ -32,7 +32,7 @@ namespace ShootyShootyBangBangEngine.GameObjects
 
         private IEnumerable<EntityComponentBase> Components { get { return m_componentsSorted.Values; } }
 
-        public void Update(GameObject ownerEnt, double dt)
+        public void Update(Controllers.BaseControllers controllers, GameObject ownerEnt, double dt)
         {
             using (UpgradeableReadLock.CreateLock(m_componentsAddQueueLock))
             {
@@ -56,7 +56,7 @@ namespace ShootyShootyBangBangEngine.GameObjects
             using (ReadLock.CreateLock(m_componentsSortedLock))
             {
                 foreach (var component in m_componentsSorted)
-                    component.Value.Tick(ownerEnt, dt);
+                    component.Value.Tick(controllers, ownerEnt, dt);
             }
         }
 

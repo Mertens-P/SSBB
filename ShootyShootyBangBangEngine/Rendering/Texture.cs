@@ -12,6 +12,12 @@ namespace ShootyShootyBangBangEngine.Rendering
     public class Texture
     {
         int m_handle;
+        int m_width;
+        int m_height;
+
+        public int GetWidth() { return m_width; }
+        public int GetHeight() { return m_height; }
+
         public Texture(string path)
         {
             m_handle = GL.GenTexture();
@@ -23,6 +29,8 @@ namespace ShootyShootyBangBangEngine.Rendering
             //ImageSharp loads from the top-left pixel, whereas OpenGL loads from the bottom-left, causing the texture to be flipped vertically.
             //This will correct that, making the texture display properly.
             image.Mutate(x => x.Flip(FlipMode.Vertical));
+            m_width = image.Width;
+            m_height = image.Height;
 
             //Get an array of the pixels, in ImageSharp's internal format.
             Rgba32[] tempPixels = image.GetPixelSpan().ToArray();
