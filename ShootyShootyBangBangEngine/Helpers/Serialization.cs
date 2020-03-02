@@ -205,7 +205,7 @@ namespace ShootyShootyBangBangEngine.Helpers
             Test();
         }
 
-        static void Test()
+        static public void Test()
         {
             TestStruct obj = new TestStruct();
             obj.a = 10;

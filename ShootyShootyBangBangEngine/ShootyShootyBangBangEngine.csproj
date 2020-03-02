@@ -79,8 +79,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ClientControllers.cs" />
     <Compile Include="Controllers\RenderControllers.cs" />
     <Compile Include="Controllers\BaseControllers.cs" />
+    <Compile Include="Controllers\ServerControllers.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameObjects\Cameras\FollowCamera.cs" />
     <Compile Include="GameObjects\Cameras\Camera.cs" />
@@ -97,6 +99,7 @@
     <Compile Include="Network\NetClient.cs" />
     <Compile Include="Network\NetClientServer.cs" />
     <Compile Include="Network\NetServer.cs" />
+    <Compile Include="Network\PacketHandlerBase.cs" />
     <Compile Include="Network\RpcDispatcher.cs" />
     <Compile Include="Rendering\LayeredRenderPipeLine.cs" />
     <Compile Include="Rendering\RenderPipelineBase.cs" />

@@ -18,6 +18,10 @@ namespace ShootyShootyBangBangEngine.Controllers
         public Camera GetCamera() { return m_mainCamera; }
 
         public virtual void Init()  {}
+        public virtual void OnUpdate(double dt)
+        {
+            m_scene.OnUpdate(dt, this);
+        }
         public virtual void OnDelete()
         {
             m_scene.OnDelete();

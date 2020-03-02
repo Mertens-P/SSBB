@@ -28,8 +28,7 @@ namespace ShootyShootyBangBangEngine
         }
         public virtual void OnUpdateFrame(double dt)
         {
-            m_controllers.GetRootScene().OnUpdate(dt, m_controllers);
-            m_controllers.GetCamera().OnUpdate(dt, m_controllers);
+            m_controllers.OnUpdate(dt);
         }
 
         public virtual void OnRenderFrame(RenderSettings renderSettings)
