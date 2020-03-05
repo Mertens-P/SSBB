@@ -49,16 +49,16 @@ namespace ShootyShootyBangBang
             m_background.SetRepeating(10.0f);
             renderPipeLine.AddRenderable(m_background, "Background", 0);
 
-            var testChar = new SSBBPlayerControlledCharacter(clientControllers, new Vector2(), new Vector2(32, 32), clientControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), clientControllers.GetShaderManager().GetDefaultShader());
-            m_controllers.GetRootScene().AddGameObject(testChar);
-
-            var camera = new FollowCamera(testChar.GetId());
-            camera.SetExtends(new Vector2(-800, -600), new Vector2(800, 600));
-            m_controllers.GetRootScene().AddGameObject(camera);
-            m_controllers.SetCamera(camera);
+            //var testChar = new SSBBPlayerControlledCharacter(clientControllers, new Vector2(), new Vector2(32, 32), clientControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), clientControllers.GetShaderManager().GetDefaultShader());
+            //m_controllers.GetRootScene().AddGameObject(testChar);
+            //
+            //var camera = new FollowCamera(testChar.GetId());
+            //camera.SetExtends(new Vector2(-800, -600), new Vector2(800, 600));
+            //m_controllers.GetRootScene().AddGameObject(camera);
+            //m_controllers.SetCamera(camera);
 
             Console.WriteLine("Sending hello world");
-            clientControllers.GetNetClient().SendRPC(new ClientServer.NetPackets.HelloWorldPacket());
+            clientControllers.GetNetClient().SendRPC(new Networking.ClientServer.NetPackets.HelloWorldPacket());
         }
     }
 }

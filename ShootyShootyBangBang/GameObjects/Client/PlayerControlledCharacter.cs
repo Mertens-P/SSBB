@@ -1,8 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Input;
-using ShootyShootyBangBangEngine;
 using ShootyShootyBangBangEngine.Controllers;
-using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Rendering;
 using System;
@@ -11,19 +9,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShootyShootyBangBang
+namespace ShootyShootyBangBang.GameObjects.Client
 {
-    class SSBBPlayerControlledCharacter : SSBBCharacter
+    class PlayerControlledCharacter : ClientCharacter
     {
-        public SSBBPlayerControlledCharacter(RenderControllers controllers, Vector2 pos, Vector2 dimensions, Texture texture, Shader shader)
-            : base(controllers, pos, dimensions, texture, shader)
+        public PlayerControlledCharacter(Guid id, RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
+            : base(controllers, position, dimensions, texture, shader)
         {
+            SetId(id);
         }
 
         public override void OnUpdate(double dt, BaseControllers controllers)
         {
-            var renderControllers = controllers as ShootyShootyBangBangEngine.Controllers.RenderControllers;
-            Vector2 dir = new Vector2(); 
+            var renderControllers = controllers as RenderControllers;
+            Vector2 dir = new Vector2();
             if (renderControllers.GetInput().IsKeyDown(Key.A)) dir.X = -1;
             if (renderControllers.GetInput().IsKeyDown(Key.D)) dir.X = 1;
             if (renderControllers.GetInput().IsKeyDown(Key.W)) dir.Y = 1;

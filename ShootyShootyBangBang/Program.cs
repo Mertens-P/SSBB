@@ -21,7 +21,9 @@ namespace ShootyShootyBangBang
             m_serverUpdateThread = new System.Threading.Thread(new System.Threading.ThreadStart(UpdateOffthreadLoop));
             m_serverUpdateThread.Start();
 
-            var clControllers = new ShootyShootyBangBangEngine.Controllers.ClientControllers(new LayeredRenderPipeline(), new Client.ClientPacketHandler());
+            var clPacketHandler = new Networking.Client.ClientPacketHandler();
+            var clControllers = new ShootyShootyBangBangEngine.Controllers.ClientControllers(new LayeredRenderPipeline(), clPacketHandler);
+            clPacketHandler.SetControllers(clControllers);
             using (ShootyShootyBangBangEngine.SSBBE engine = new ShootyShootyBangBangEngine.SSBBE(new ShootyShootyBangBangGame(clControllers), 800, 600, "ShootyShootyBangBang"))
             {
                 engine.Run(60.0);
@@ -33,7 +35,7 @@ namespace ShootyShootyBangBang
         {
             System.Threading.Thread.CurrentThread.Name = "Server Update Thread";
 
-            var packetHandler = new Server.ServerPacketHandler();
+            var packetHandler = new Networking.Server.ServerPacketHandler();
             var svControllers = new ShootyShootyBangBangEngine.Controllers.ServerControllers(packetHandler);
             packetHandler.SetControllers(svControllers);
             var svGame = new ShootyShootyBangBangGame(svControllers);

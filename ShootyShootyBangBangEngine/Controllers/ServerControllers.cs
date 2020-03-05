@@ -53,7 +53,7 @@ namespace ShootyShootyBangBangEngine.Controllers
             Net.DisconnectConnection(connectionId);
         }
 
-        public ServerControllers(PacketHandlerBase packetHandler)
+        public ServerControllers(PacketHandlerServer packetHandler)
         {
             try
             {
@@ -61,6 +61,7 @@ namespace ShootyShootyBangBangEngine.Controllers
                 m_netServer.OnStatusChanged += netServer_OnStatusChanged;
                 m_netServer.OnMessage += netServer_OnMessage;
                 packetHandler.Initialize(m_netServer.RpcDispatcher);
+                OnConnect += packetHandler.OnConnect;
                 Console.WriteLine("Server initiate success!!");
             }
             catch (Exception e)

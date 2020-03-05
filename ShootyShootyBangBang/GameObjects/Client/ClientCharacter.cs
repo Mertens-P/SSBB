@@ -1,7 +1,5 @@
 ﻿using OpenTK;
-using ShootyShootyBangBangEngine;
 using ShootyShootyBangBangEngine.Controllers;
-using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Rendering;
 using System;
@@ -10,16 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShootyShootyBangBang
+namespace ShootyShootyBangBang.GameObjects.Client
 {
-    class SSBBCharacter : GameObject
+    class ClientCharacter : ClientServer.SSBBCharacter
     {
-        protected float m_movementSpeed = 1000.0f;
         TexturedQuad m_visual;
-
-        public SSBBCharacter(RenderControllers controllers, Vector2 pos, Vector2 dimensions, Texture texture, Shader shader)
+        public ClientCharacter(RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
+            :base(position)
         {
-            GetComponents().AddComponent(new ComponentTransform(pos));
             m_visual = new TexturedQuad(dimensions, texture, shader);
             var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
             renderPipeLine.AddRenderable(m_visual, "Characters", 0);

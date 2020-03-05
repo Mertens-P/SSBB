@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShootyShootyBangBang.ClientServer.NetPackets
+namespace ShootyShootyBangBang.Networking.ClientServer.NetPackets
 {
     [Serializable, NetSerializable]
     public class HelloWorldPacket
