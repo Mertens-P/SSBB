@@ -81,7 +81,7 @@ namespace ShootyShootyBangBangEngine.Rendering
         {
             var vec = new Vector2(
                 Helpers.MathHelpers.Lerp(0, 1.0f, (int)m_currentFrame * m_relFrameSize.X),
-                Helpers.MathHelpers.Lerp(1.0f - m_relFrameSize.Y, 0, (float)animationId * m_relFrameSize.Y));
+                Helpers.MathHelpers.Lerp(1.0f - m_relFrameSize.Y, 0, (float)animationId / (m_maxAnimations-1)));
             SetUvOffset(vec);
         }
     }

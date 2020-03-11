@@ -34,6 +34,7 @@ namespace ShootyShootyBangBangEngine.Rendering
         Vector2 m_offset;
         Vector2 m_uvScale = new Vector2(1, 1);
         Vector2 m_uvOffset = new Vector2();
+        bool m_mirrored = false;
 
         static int s_vertexStride = 5;
         
@@ -42,6 +43,7 @@ namespace ShootyShootyBangBangEngine.Rendering
         public void SetRepeating(float textureRepeatScale)  { m_uvScale = new Vector2(textureRepeatScale, textureRepeatScale);  }
         public void SetUvScale(Vector2 uvScale)             { m_uvScale = uvScale; }
         public void SetUvOffset(Vector2 uvOffset)           { m_uvOffset = uvOffset; }
+        public void SetMirrored(bool isMirrored)            { m_mirrored = isMirrored; }
 
         public TexturedQuad(Vector2 dimensions, Texture texture, Shader shader)
         {
@@ -117,23 +119,41 @@ namespace ShootyShootyBangBangEngine.Rendering
             var halfDim = m_dimensions * 0.5f;
             m_vertices[i_getVertexStartId(0) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(0) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(0) + 3] = m_uvOffset.X + m_uvScale.X;
+            m_vertices[i_getVertexStartId(0) + 3] = i_getUvXCoord(false);
             m_vertices[i_getVertexStartId(0) + 4] = m_uvOffset.Y + m_uvScale.Y;
 
             m_vertices[i_getVertexStartId(1) + 0] = (position.X + halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(1) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(1) + 3] = m_uvOffset.X + m_uvScale.X;
+            m_vertices[i_getVertexStartId(1) + 3] = i_getUvXCoord(false);
             m_vertices[i_getVertexStartId(1) + 4] = m_uvOffset.Y;
 
             m_vertices[i_getVertexStartId(2) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(2) + 1] = (position.Y - halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(2) + 3] = m_uvOffset.X;
+            m_vertices[i_getVertexStartId(2) + 3] = i_getUvXCoord(true);
             m_vertices[i_getVertexStartId(2) + 4] = m_uvOffset.Y;
 
             m_vertices[i_getVertexStartId(3) + 0] = (position.X - halfDim.X - cameraPos.X) * renderSettings.InvWidth;
             m_vertices[i_getVertexStartId(3) + 1] = (position.Y + halfDim.Y - cameraPos.Y) * renderSettings.InvHeight;
-            m_vertices[i_getVertexStartId(3) + 3] = m_uvOffset.X;
+            m_vertices[i_getVertexStartId(3) + 3] = i_getUvXCoord(true);
             m_vertices[i_getVertexStartId(3) + 4] = m_uvOffset.Y + m_uvScale.Y;
+        }
+
+        float i_getUvXCoord(bool isLeftVert)
+        {
+            if (!m_mirrored)
+            {
+                if (isLeftVert)
+                    return m_uvOffset.X;
+                else
+                    return m_uvOffset.X + m_uvScale.X;
+            }
+            else
+            {
+                if (isLeftVert)
+                    return m_uvOffset.X + m_uvScale.X;
+                else
+                    return m_uvOffset.X;
+            }
         }
     }
 }
