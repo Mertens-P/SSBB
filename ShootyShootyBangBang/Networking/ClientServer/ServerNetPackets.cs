@@ -15,4 +15,11 @@ namespace ShootyShootyBangBang.Networking.ClientServer.NetPackets
         public Guid id;
         public Vector2 position;
     }
+
+    // server originated
+    [Serializable, NetSerializable]
+    public class ServerUpdatePacket
+    {
+        public List<ShootyShootyBangBangEngine.GameObjects.Components.ComponentReplicator.ReplicationData> ReplicationData;
+    }
 }

@@ -13,9 +13,10 @@ namespace ShootyShootyBangBang.GameObjects.ClientServer
     {
         protected float m_movementSpeed = 1000.0f;
 
-        public SSBBCharacter(Vector2 position)
+        public SSBBCharacter(Vector2 position, ComponentReplicator.PeerType peerType)
         {
             GetComponents().AddComponent(new ComponentTransform(position));
+            GetComponents().AddComponentAsType(new Components.CharacterReplicator(peerType), typeof(ComponentReplicator));
         }
     }
 }

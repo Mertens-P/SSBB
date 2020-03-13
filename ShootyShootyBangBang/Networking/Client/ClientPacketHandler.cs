@@ -2,6 +2,7 @@
 using ShootyShootyBangBang.Networking.ClientServer.NetPackets;
 using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects.Cameras;
+using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Helpers;
 using ShootyShootyBangBangEngine.Network;
 using System;
@@ -25,6 +26,7 @@ namespace ShootyShootyBangBang.Networking.Client
         {
             dispatcher.Functions[typeof(HelloWorldPacket)] = OnPacketHelloWorld;
             dispatcher.Functions[typeof(SpawnPlayerServerPacket)] = OnSpawnPlayerServerPacket;
+            dispatcher.Functions[typeof(ServerUpdatePacket)] = OnServerUpdatePacket;
         }
 
         protected void OnPacketHelloWorld(RPCData data)
@@ -42,6 +44,22 @@ namespace ShootyShootyBangBang.Networking.Client
             camera.SetExtends(new Vector2(-800, -600), new Vector2(800, 600));
             m_clControllers.GetRootScene().AddGameObject(camera);
             m_clControllers.SetCamera(camera);
+        }
+
+        protected void OnServerUpdatePacket(RPCData data)
+        {
+            var packet = data.DeserializedObject as ServerUpdatePacket;
+            foreach(var repData in packet.ReplicationData)
+            {
+                var repObj = m_clControllers.GetRootScene().GetGameObject(repData.CharacterId);
+                if (repObj == null)
+                {
+                    repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+                    m_clControllers.GetRootScene().AddGameObject(repObj);
+                }
+                var replicator = repObj.GetComponents().GetComponent<ComponentReplicator>();
+                replicator.OnReplicate(m_clControllers, repObj, repData);
+            }
         }
     }
 }

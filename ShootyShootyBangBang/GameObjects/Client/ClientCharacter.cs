@@ -13,9 +13,18 @@ namespace ShootyShootyBangBang.GameObjects.Client
     class ClientCharacter : ClientServer.SSBBCharacter
     {
         TexturedQuad m_visual;
-        public ClientCharacter(RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
-            :base(position)
+        public ClientCharacter(RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader, ComponentReplicator.PeerType peertype)
+            :base(position, peertype)
         {
+            m_visual = new TexturedQuad(dimensions, texture, shader);
+            var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
+            renderPipeLine.AddRenderable(m_visual, "Characters", 0);
+        }
+
+        public ClientCharacter(Guid id, RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
+            : base(position, ComponentReplicator.PeerType.PT_Remote)
+        {
+            SetId(id);
             m_visual = new TexturedQuad(dimensions, texture, shader);
             var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
             renderPipeLine.AddRenderable(m_visual, "Characters", 0);

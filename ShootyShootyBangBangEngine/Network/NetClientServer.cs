@@ -422,6 +422,17 @@ namespace ShootyShootyBangBangEngine.Network
             SendPacket(CreateRPCPacket(RPCObject), connectionIds, delivery, sequenceChannel);
         }
 
+        public void BroadCastRPC(object RPCObject, List<long> exclusionIds, NetWrapOrdering delivery = NetWrapOrdering.ReliableOrdered, int sequenceChannel = 0)
+        {
+            List<long> sendIds = new List<long>();
+            foreach(var connection in m_connections)
+            {
+                if (!exclusionIds.Contains(connection.Key))
+                    sendIds.Add(connection.Key);
+            }
+            SendRPC(RPCObject, sendIds, delivery, sequenceChannel);
+        }
+
         public void WaitForPacket(int millisecondsTimeout)
         {
             Stopwatch sw = Stopwatch.StartNew();

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static ShootyShootyBangBangEngine.SSBBE;
 
 namespace ShootyShootyBangBangEngine.Controllers
 {
@@ -16,6 +17,7 @@ namespace ShootyShootyBangBangEngine.Controllers
         ShaderManager m_shaderManager = new ShaderManager();
         RenderPipelineBase m_renderPipeline;
         KeyboardState m_input;
+        RenderSettings m_lastRenderSettings;
 
         public RenderControllers(RenderPipelineBase renderPipeline) { m_renderPipeline = renderPipeline; }
 
@@ -39,8 +41,17 @@ namespace ShootyShootyBangBangEngine.Controllers
         public override void OnUpdate(double dt)
         {
             base.OnUpdate(dt);
-            m_input = Keyboard.GetState();
+            if (m_lastRenderSettings.Focused)
+                m_input = Keyboard.GetState();
+            else
+                m_input = new KeyboardState();
             GetRenderPipeline().OnUpdate(this, dt);
+        }
+
+        public void OnRender(RenderSettings renderSettings)
+        {
+            m_lastRenderSettings = renderSettings;
+            m_renderPipeline.OnRender(this, renderSettings);
         }
     }
 }

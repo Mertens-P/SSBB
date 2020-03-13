@@ -16,6 +16,7 @@ namespace ShootyShootyBangBangEngine
         protected bool m_isRunning = true;
 
         public bool GetisRunning() { return m_isRunning; }
+        public void Stop() { m_isRunning = false; }
 
         public Game(BaseControllers controllers) { m_controllers = controllers; }
         public virtual void OnLoad()
@@ -34,7 +35,7 @@ namespace ShootyShootyBangBangEngine
         public virtual void OnRenderFrame(RenderSettings renderSettings)
         {
             var renderControllers = m_controllers as RenderControllers;
-            renderControllers.GetRenderPipeline().OnRender(renderControllers, renderSettings);
+            renderControllers.OnRender(renderSettings);
         }
     }
 }

@@ -84,6 +84,8 @@
   <ItemGroup>
     <Compile Include="GameObjects\Client\ClientCharacter.cs" />
     <Compile Include="GameObjects\Client\PlayerControlledCharacter.cs" />
+    <Compile Include="GameObjects\Components\CharacterReplicator.cs" />
+    <Compile Include="Networking\ClientServer\ClientnetPackets.cs" />
     <Compile Include="Networking\ClientServer\ServerNetPackets.cs" />
     <Compile Include="Networking\ClientServer\SharedNetPackets.cs" />
     <Compile Include="GameObjects\ClientServer\SSBBCharacter.cs" />
@@ -96,6 +98,8 @@
     </Compile>
     <Compile Include="Networking\Client\ClientPacketHandler.cs" />
     <Compile Include="Networking\Server\ServerPacketHandler.cs" />
+    <Compile Include="ShootyShootyBangBangServerGame .cs" />
+    <Compile Include="ShootyShootyBangBangClientGame .cs" />
     <Compile Include="ShootyShootyBangBangGame.cs" />
   </ItemGroup>
   <ItemGroup>

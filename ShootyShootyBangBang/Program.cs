@@ -15,39 +15,49 @@ namespace ShootyShootyBangBang
     class Program
     {
         static Thread m_serverUpdateThread;
+        static ShootyShootyBangBangGame m_serverGame = null;
+
         static void Main(string[] args)
         {
             InitializeSerializer();
-            m_serverUpdateThread = new System.Threading.Thread(new System.Threading.ThreadStart(UpdateOffthreadLoop));
-            m_serverUpdateThread.Start();
-
-            var clPacketHandler = new Networking.Client.ClientPacketHandler();
-            var clControllers = new ShootyShootyBangBangEngine.Controllers.ClientControllers(new LayeredRenderPipeline(), clPacketHandler);
-            clPacketHandler.SetControllers(clControllers);
-            using (ShootyShootyBangBangEngine.SSBBE engine = new ShootyShootyBangBangEngine.SSBBE(new ShootyShootyBangBangGame(clControllers), 800, 600, "ShootyShootyBangBang"))
+            if (args.Contains("-Server"))
             {
-                engine.Run(60.0);
+                m_serverUpdateThread = new System.Threading.Thread(new System.Threading.ThreadStart(ServerThread));
+                m_serverUpdateThread.Start();
+            }
+
+            if (args.Contains("-Client"))
+            {
+                var clPacketHandler = new Networking.Client.ClientPacketHandler();
+                var clControllers = new ShootyShootyBangBangEngine.Controllers.ClientControllers(new LayeredRenderPipeline(), clPacketHandler);
+                clPacketHandler.SetControllers(clControllers);
+                using (ShootyShootyBangBangEngine.SSBBE engine = new ShootyShootyBangBangEngine.SSBBE(new ShootyShootyBangBangClientGame(clControllers), 800, 600, "ShootyShootyBangBang"))
+                {
+                    engine.Run(60.0);
+                }
+                if (m_serverGame != null)
+                    m_serverGame.Stop();
             }
         }
 
 
-        protected static void UpdateOffthreadLoop()
+        protected static void ServerThread()
         {
             System.Threading.Thread.CurrentThread.Name = "Server Update Thread";
 
             var packetHandler = new Networking.Server.ServerPacketHandler();
             var svControllers = new ShootyShootyBangBangEngine.Controllers.ServerControllers(packetHandler);
             packetHandler.SetControllers(svControllers);
-            var svGame = new ShootyShootyBangBangGame(svControllers);
+            m_serverGame = new ShootyShootyBangBangServerGame(svControllers);
             Stopwatch svUpdateSw = new Stopwatch();
             long tickDuration = 0;
-            double tarTickTime = 1.0 / 60.0;
+            double tarTickTime = 1.0 / 30.0;
             long tarFrameTimeInMs = (long)(tarTickTime * 1000.0);
 
-            while (svGame.GetisRunning())
+            while (m_serverGame.GetisRunning())
             {
                 svUpdateSw.Restart();
-                svGame.OnUpdateFrame(tarTickTime);
+                m_serverGame.OnUpdateFrame(tarTickTime);
 
                 tickDuration += svUpdateSw.ElapsedMilliseconds;
                 if (tickDuration < tarFrameTimeInMs)
@@ -58,6 +68,7 @@ namespace ShootyShootyBangBang
                 else
                     tickDuration -= tarFrameTimeInMs;
             }
+            m_serverGame.UnLoad();
         }
 
         public static void InitializeSerializer()

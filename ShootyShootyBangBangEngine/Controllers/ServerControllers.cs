@@ -33,6 +33,8 @@ namespace ShootyShootyBangBangEngine.Controllers
         Thread m_packetRecieverThread;
         Stopwatch m_dtTimer = new Stopwatch();
         long m_dtLastTick = 0;
+        bool m_isRunning = true;
+
         public float TickrateInSeconds { get { return 1.0f / 100.0f; } }
         public long TickrateInMilliseconds { get { return (long)Math.Ceiling(TickrateInSeconds * 1000.0f); } }
 
@@ -122,6 +124,7 @@ namespace ShootyShootyBangBangEngine.Controllers
             base.OnDelete();
             if (m_netServer != null)
                 m_netServer.UPnPCleanup();
+            m_isRunning = false;
         }
 
 
@@ -132,7 +135,7 @@ namespace ShootyShootyBangBangEngine.Controllers
             try
             {
 #endif
-            while (true)
+            while (m_isRunning)
             {
                 // slumber before next tick to go easy on the CPU
                 long waitFor = (m_dtLastTick + TickrateInMilliseconds) - m_dtTimer.ElapsedMilliseconds;

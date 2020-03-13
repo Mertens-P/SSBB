@@ -27,6 +27,7 @@ namespace ShootyShootyBangBangEngine
             public int Height;
             public float InvWidth;
             public float InvHeight;
+            public bool Focused;
         }
 
         public SSBBE(Game game, int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { m_game = game; }
@@ -50,7 +51,7 @@ namespace ShootyShootyBangBangEngine
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
             
-            m_game.OnRenderFrame(new RenderSettings() { Width = Width, Height = Height, InvWidth = 1.0f / (float)Width, InvHeight = 1.0f / Height });
+            m_game.OnRenderFrame(new RenderSettings() { Width = Width, Height = Height, InvWidth = 1.0f / (float)Width, InvHeight = 1.0f / Height, Focused = Focused });
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

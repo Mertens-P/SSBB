@@ -24,6 +24,12 @@ namespace ShootyShootyBangBangEngine.GameObjects
             return null;
         }
 
+        public IEnumerable<GameObject> GetGameObjects()
+        {
+            foreach (var kv in m_gameObjects)
+                yield return kv.Value;
+        }
+
         public virtual void OnUpdate(double dt, BaseControllers controllers)
         {
             foreach (var gameObjectKv in m_gameObjects)
