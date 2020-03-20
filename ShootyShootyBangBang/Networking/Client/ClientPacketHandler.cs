@@ -37,7 +37,8 @@ namespace ShootyShootyBangBang.Networking.Client
         protected void OnSpawnPlayerServerPacket(RPCData data)
         {
             var packet = data.DeserializedObject as SpawnPlayerServerPacket;
-            var playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers, packet.position, new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+            //var playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers, packet.position, new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+            var playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers, packet.position, new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
             m_clControllers.GetRootScene().AddGameObject(playerCharacter);
 
             var camera = new FollowCamera(playerCharacter.GetId());
@@ -54,7 +55,8 @@ namespace ShootyShootyBangBang.Networking.Client
                 var repObj = m_clControllers.GetRootScene().GetGameObject(repData.CharacterId);
                 if (repObj == null)
                 {
-                    repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+                    //repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+                    repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
                     m_clControllers.GetRootScene().AddGameObject(repObj);
                 }
                 var replicator = repObj.GetComponents().GetComponent<ComponentReplicator>();

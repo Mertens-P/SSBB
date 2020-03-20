@@ -17,6 +17,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
         public class CharacterReplicationData : ComponentReplicator.ReplicationData
         {
             public Vector2 Position;
+            public float Angle;
         }
 
 
@@ -28,7 +29,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
         public override ReplicationData GetReplicationData(BaseControllers controllers, GameObject ownerEnt)
         {
             var transComp = ownerEnt.GetComponents().GetComponent<ComponentTransform>();
-            return new CharacterReplicationData() { CharacterId = ownerEnt.GetId(), Position = transComp.GetPosition() };
+            return new CharacterReplicationData() { CharacterId = ownerEnt.GetId(), Position = transComp.GetPosition(), Angle = transComp.GetAngle() };
         }
 
         public override void OnReplicate(BaseControllers controllers, GameObject ownerEnt, ComponentReplicator.ReplicationData replicationData)
@@ -37,6 +38,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
             var characterReplicationData = replicationData as CharacterReplicationData;
             var transComp = ownerEnt.GetComponents().GetComponent<ComponentTransform>();
             transComp.SetPosition(characterReplicationData.Position);
+            transComp.SetAngle(characterReplicationData.Angle);
         }
     }
 }

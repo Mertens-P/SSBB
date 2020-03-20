@@ -20,6 +20,8 @@ namespace ShootyShootyBangBangEngine
     {
         Game m_game;
         string m_contentDirPath = "../../Content/";
+        int m_mousePosX;
+        int m_mousePosY;
 
         public struct RenderSettings
         {
@@ -28,6 +30,8 @@ namespace ShootyShootyBangBangEngine
             public float InvWidth;
             public float InvHeight;
             public bool Focused;
+            public int MousePosX;
+            public int MousePosY;
         }
 
         public SSBBE(Game game, int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { m_game = game; }
@@ -47,11 +51,17 @@ namespace ShootyShootyBangBangEngine
                 Exit();
         }
 
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            base.OnMouseMove(e);
+            m_mousePosX = e.X;
+            m_mousePosY = e.Y;
+        }
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            
-            m_game.OnRenderFrame(new RenderSettings() { Width = Width, Height = Height, InvWidth = 1.0f / (float)Width, InvHeight = 1.0f / Height, Focused = Focused });
+            m_game.OnRenderFrame(new RenderSettings() { Width = Width, Height = Height, InvWidth = 1.0f / (float)Width, InvHeight = 1.0f / Height, Focused = Focused, MousePosX = m_mousePosX, MousePosY = m_mousePosY });
 
             Context.SwapBuffers();
             base.OnRenderFrame(e);

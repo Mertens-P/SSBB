@@ -38,7 +38,7 @@ namespace ShootyShootyBangBang
         public override void OnUpdateFrame(double dt)
         {
             base.OnUpdateFrame(dt);
-            if (m_clientControllers.GetInput().IsKeyDown(Key.Escape))
+            if (m_clientControllers.GetkeyboardState().IsKeyDown(Key.Escape))
                 m_isRunning = false;
         }
     }

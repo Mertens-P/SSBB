@@ -35,6 +35,7 @@ namespace ShootyShootyBangBang.GameObjects.Client
             base.OnUpdate(dt, controllers);
             var transComp = GetComponents().GetComponent<ComponentTransform>();
             m_visual.SetPosition(transComp.GetPosition());
+            m_visual.SetAngle(transComp.GetAngle());
         }
 
         public override void OnDelete()

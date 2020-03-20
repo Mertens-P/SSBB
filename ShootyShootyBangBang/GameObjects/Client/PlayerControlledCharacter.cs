@@ -23,16 +23,32 @@ namespace ShootyShootyBangBang.GameObjects.Client
         {
             var clientControllers = controllers as ClientControllers;
             Vector2 dir = new Vector2();
-            if (clientControllers.GetInput().IsKeyDown(Key.A)) dir.X = -1;
-            if (clientControllers.GetInput().IsKeyDown(Key.D)) dir.X = 1;
-            if (clientControllers.GetInput().IsKeyDown(Key.W)) dir.Y = 1;
-            if (clientControllers.GetInput().IsKeyDown(Key.S)) dir.Y = -1;
+            if (clientControllers.GetkeyboardState().IsKeyDown(Key.A)) dir.X = -1;
+            if (clientControllers.GetkeyboardState().IsKeyDown(Key.D)) dir.X = 1;
+            if (clientControllers.GetkeyboardState().IsKeyDown(Key.W)) dir.Y = 1;
+            if (clientControllers.GetkeyboardState().IsKeyDown(Key.S)) dir.Y = -1;
+            bool dirty = false;
+            var transform = GetComponents().GetComponent<ComponentTransform>();
             if (dir.LengthSquared > 0)
             {
                 dir.Normalize();
-                var transform = GetComponents().GetComponent<ComponentTransform>();
                 if (transform != null)
                     transform.SetPosition(transform.GetPosition() + dir * m_movementSpeed * (float)dt);
+                dirty = true;
+            }
+            if (transform != null)
+            {
+                var mousePos = clientControllers.GetMousePosInScreenSpace();
+                var lookDir = mousePos - transform.GetPosition();
+                lookDir.Normalize();
+                var ang = (float)Math.Acos(Vector2.Dot(lookDir, new Vector2(1.0f, 0)));
+                if (Vector2.Dot(lookDir, new Vector2(0, 1)) < 0)
+                    ang = -ang;
+                dirty = dirty || transform.GetAngle() != ang;
+                transform.SetAngle(ang);
+            }
+            if(dirty)
+            {
                 var replicator = GetComponents().GetComponent<ComponentReplicator>();
                 clientControllers.GetNetClient().SendRPC(new Networking.ClientServer.NetPackets.CharacterUpdateClientPacket() { replicationData = replicator.GetReplicationData(controllers, this) }, ShootyShootyBangBangEngine.Network.NetWrapOrdering.Unreliable);
             }
