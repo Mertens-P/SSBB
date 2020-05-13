@@ -34,7 +34,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
         public override void Tick(BaseControllers controllers, GameObject owner, double dt)
         {
             base.Tick(controllers, owner, dt);
-            if (GetPeerType() == PeerType.PT_Local) return;
+            if (GetPeerType() != PeerType.PT_Remote) return;
         }
 
         public override void OnReplicate(BaseControllers controllers, GameObject ownerEnt, ComponentReplicator.ReplicationData replicationData)
