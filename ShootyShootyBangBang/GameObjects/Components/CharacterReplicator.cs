@@ -1,9 +1,9 @@
-﻿using OpenTK;
-using ShootyShootyBangBangEngine.Controllers;
+﻿using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Helpers;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
         [Serializable, NetSerializable]
         public class CharacterReplicationData : ComponentReplicator.ReplicationData
         {
-            public Vector2 Position;
+            public OpenTK.Vector2 Position; //System.Vector2 doesn't want to serialize
             public float Angle;
         }
 
@@ -29,7 +29,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
         public override ReplicationData GetReplicationData(BaseControllers controllers, GameObject ownerEnt)
         {
             var transComp = ownerEnt.GetComponents().GetComponent<ComponentTransform>();
-            return new CharacterReplicationData() { CharacterId = ownerEnt.GetId(), Position = transComp.GetPosition(), Angle = transComp.GetAngle() };
+            return new CharacterReplicationData() { CharacterId = ownerEnt.GetId(), Position = MathHelpers.SytemVecToOpenTkVec(transComp.GetPosition()), Angle = transComp.GetAngle() };
         }
 
         public override void OnReplicate(BaseControllers controllers, GameObject ownerEnt, ComponentReplicator.ReplicationData replicationData)
@@ -37,7 +37,7 @@ namespace ShootyShootyBangBang.GameObjects.Components
             if (GetPeerType() == PeerType.PT_Local) return;
             var characterReplicationData = replicationData as CharacterReplicationData;
             var transComp = ownerEnt.GetComponents().GetComponent<ComponentTransform>();
-            transComp.SetPosition(characterReplicationData.Position);
+            transComp.SetPosition(MathHelpers.OpenTkVecToSystemVec(characterReplicationData.Position));
             transComp.SetAngle(characterReplicationData.Angle);
         }
     }

@@ -13,7 +13,6 @@ namespace ShootyShootyBangBang
 {
     class ShootyShootyBangBangGame : ShootyShootyBangBangEngine.Game
     {
-        TexturedQuad m_background;
         public ShootyShootyBangBangGame(ShootyShootyBangBangEngine.Controllers.BaseControllers controllers)
             :base(controllers)
         {

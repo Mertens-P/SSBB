@@ -14,7 +14,7 @@ namespace ShootyShootyBangBang
     class ShootyShootyBangBangServerGame : ShootyShootyBangBangGame
     {
         ShootyShootyBangBangEngine.Controllers.ServerControllers m_serverControllers;
-        TexturedQuad m_background;
+
         public ShootyShootyBangBangServerGame(ShootyShootyBangBangEngine.Controllers.ServerControllers controllers)
             :base(controllers)
         {

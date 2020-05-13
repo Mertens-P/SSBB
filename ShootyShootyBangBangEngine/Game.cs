@@ -32,6 +32,12 @@ namespace ShootyShootyBangBangEngine
             m_controllers.OnUpdate(dt);
         }
 
+        public virtual void OnKeyPressed(KeyPressEventArgs e)   { }
+        public virtual void OnKeyDown(KeyboardKeyEventArgs e) { }
+        public virtual void OnKeyUp(KeyboardKeyEventArgs e) { }
+        public virtual void OnMouseDown(MouseButtonEventArgs e) { }
+        public virtual void OnMouseUp(MouseButtonEventArgs e) { }
+
         public virtual void OnRenderFrame(RenderSettings renderSettings)
         {
             var renderControllers = m_controllers as RenderControllers;

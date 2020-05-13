@@ -12,13 +12,17 @@ namespace ShootyShootyBangBangEngine.Controllers
     {
         NetClient m_netClient;
         PacketHandlerBase m_packetHandler;
+        string m_ip;
+        int m_port;
 
         public NetClient GetNetClient() { return m_netClient; }
 
-        public ClientControllers(RenderPipelineBase renderPipeline, PacketHandlerBase packetHandler)
+        public ClientControllers(RenderPipelineBase renderPipeline, PacketHandlerBase packetHandler, string ip = "127.0.0.1", int port = 4805)
             : base(renderPipeline)
         {
             m_packetHandler = packetHandler;
+            m_ip = ip;
+            m_port = port;
         }
 
         public override void Init()
@@ -26,7 +30,7 @@ namespace ShootyShootyBangBangEngine.Controllers
             base.Init();
             m_netClient = new NetClient();
             m_packetHandler.Initialize(m_netClient.RpcDispatcher);
-            m_netClient.Connect("127.0.0.1", 4805);
+            m_netClient.Connect(m_ip, m_port);
             Console.WriteLine("Send connect package");
 
             Task.Run(() =>

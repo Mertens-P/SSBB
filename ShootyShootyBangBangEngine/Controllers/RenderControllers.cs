@@ -1,10 +1,10 @@
-﻿using OpenTK;
-using OpenTK.Input;
+﻿using OpenTK.Input;
 using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Cameras;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Rendering;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,7 +78,7 @@ namespace ShootyShootyBangBangEngine.Controllers
             mousePos.X = Helpers.MathHelpers.Lerp(-screenCenter.X, screenCenter.X, mousePos.X / m_lastRenderSettings.Width);
             mousePos.Y = Helpers.MathHelpers.Lerp(screenCenter.Y, -screenCenter.Y, mousePos.Y / m_lastRenderSettings.Height);
 
-            return camPos + mousePos;
+            return camPos + mousePos / GetCamera().GetZoomFactor();
         }
     }
 }

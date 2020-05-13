@@ -36,6 +36,11 @@ namespace ShootyShootyBangBangEngine
 
         public SSBBE(Game game, int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { m_game = game; }
 
+        public void SetWindowLocation(int xPos, int yPos) { Location = new System.Drawing.Point(xPos, yPos); }
+
+        public int GetWindowXPos() { return Location.X; }
+        public int GetWindowYPos() { return Location.Y; }
+
         protected override void OnLoad(EventArgs e)
         {
             GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -56,6 +61,36 @@ namespace ShootyShootyBangBangEngine
             base.OnMouseMove(e);
             m_mousePosX = e.X;
             m_mousePosY = e.Y;
+        }
+
+        protected override void OnKeyPress(KeyPressEventArgs e)
+        {
+            base.OnKeyPress(e);
+            m_game.OnKeyPressed(e);
+        }
+
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            m_game.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyboardKeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+            m_game.OnKeyUp(e);
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseDown(e);
+            m_game.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+            m_game.OnMouseUp(e);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)

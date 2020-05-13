@@ -43,6 +43,9 @@
     <Reference Include="NetSerializer">
       <HintPath>.\NetSerializer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\Sailors\Sailors\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=3.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.3.1.0\lib\net20\OpenTK.dll</HintPath>
     </Reference>
@@ -92,6 +95,7 @@
     <Compile Include="GameObjects\EntityComponentManager.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Scene.cs" />
+    <Compile Include="Helpers\CommandLineParser.cs" />
     <Compile Include="Helpers\Helpers.cs" />
     <Compile Include="Helpers\Serialization.cs" />
     <Compile Include="Helpers\Threading\MonitorLock.cs" />

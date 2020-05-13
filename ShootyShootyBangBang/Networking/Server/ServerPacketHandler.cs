@@ -4,6 +4,7 @@ using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Helpers;
 using ShootyShootyBangBangEngine.Network;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,21 +26,27 @@ namespace ShootyShootyBangBang.Networking.Server
         public void Initialize(RPCDispatcher dispatcher)
         {
             dispatcher.Functions[typeof(HelloWorldPacket)] = OnPacketHelloWorld;
+            dispatcher.Functions[typeof(RequestPlayerCharacterClientPacket)] = OnPacketRequestPlayerCharacter;
             dispatcher.Functions[typeof(CharacterUpdateClientPacket)] = OnPacketCharacterUpdate;
         }
 
         public void OnConnect(object sender, long connectionId)
         {
-            var character = new GameObjects.ClientServer.SSBBCharacter(new OpenTK.Vector2(), ComponentReplicator.PeerType.PT_Server);
-            m_svControllers.GetRootScene().AddGameObject(character);
-            m_netIdToCharacterId[connectionId] = character.GetId();
-            m_svControllers.Net.SendRPC(new SpawnPlayerServerPacket() { id = character.GetId(), position = new OpenTK.Vector2() }, connectionId);
         }
 
         protected void OnPacketHelloWorld(RPCData data)
         {
             Console.WriteLine("Hello world (server)");
             m_svControllers.Net.SendRPC(new HelloWorldPacket(), data.OriginalMessage.SenderConnectionId);
+        }
+
+        protected void OnPacketRequestPlayerCharacter(RPCData data)
+        {
+            var packet = (RequestPlayerCharacterClientPacket)data.DeserializedObject;
+            var character = new GameObjects.ClientServer.SSBBCharacter(new Vector2(), ComponentReplicator.PeerType.PT_Server);
+            m_svControllers.GetRootScene().AddGameObject(character);
+            m_netIdToCharacterId[data.OriginalMessage.SenderConnectionId] = character.GetId();
+            m_svControllers.Net.SendRPC(new SpawnPlayerServerPacket() { id = character.GetId(), position = packet.position, aiType = packet.aiType }, data.OriginalMessage.SenderConnectionId);
         }
 
         protected void OnPacketCharacterUpdate(RPCData data)

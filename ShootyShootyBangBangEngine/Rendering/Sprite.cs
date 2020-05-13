@@ -1,8 +1,8 @@
-﻿using OpenTK;
-using OpenTK.Graphics;
+﻿using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using ShootyShootyBangBangEngine.Controllers;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,13 +20,24 @@ namespace ShootyShootyBangBangEngine.Rendering
 
         Dictionary<string, AnimationStats> m_animations = new Dictionary<string, AnimationStats>();
 
+        enum AnimationPlayType
+        {
+            APT_Paused,
+            APT_Playing,
+            APT_Looping,
+        }
+
         float m_maxFrames;
         float m_maxAnimations;
         string m_currentPlayingAnimation = null;
-        bool m_looping = false;
+        AnimationPlayType m_animationPlayType = AnimationPlayType.APT_Paused;
         double m_currentFrame = 0;
         double m_animationSpeed = 1.0f;
         Vector2 m_relFrameSize;
+        float m_yCorrection = 0;
+
+        public string GetAnimationName() { return m_currentPlayingAnimation; }
+        public int GetCurrentFrame() { return (int)m_currentFrame; }
 
         public Sprite(Vector2 dimensions, Texture texture, Shader shader, int maxAnimations, int maxFrames)
             : base(dimensions, texture, shader)
@@ -44,7 +55,8 @@ namespace ShootyShootyBangBangEngine.Rendering
         {
             m_maxAnimations = maxAnimations;
             m_maxFrames = maxFrames;
-            SetUvScale(m_relFrameSize = new Vector2(1.0f / maxFrames, 1.0f / maxAnimations));
+            m_yCorrection = 1.0f / dimensions.Y;
+            SetUvScale(m_relFrameSize = new Vector2(1.0f / maxFrames, (1.0f / maxAnimations)));
             i_setCurrentFrame(0);
         }
 
@@ -54,14 +66,17 @@ namespace ShootyShootyBangBangEngine.Rendering
             if(!string.IsNullOrEmpty(m_currentPlayingAnimation) && m_animations.TryGetValue(m_currentPlayingAnimation, out var animation))
             {
                 i_setCurrentFrame(animation.AnimationId);
-                if (m_looping)
+                switch (m_animationPlayType)
                 {
-                    m_currentFrame = m_currentFrame + dt* m_animationSpeed;
-                    if (m_currentFrame > m_maxFrames)
-                        m_currentFrame -= m_maxFrames;
+                    case AnimationPlayType.APT_Looping:
+                        m_currentFrame = m_currentFrame + dt * m_animationSpeed;
+                        if (m_currentFrame > m_maxFrames)
+                            m_currentFrame -= m_maxFrames;
+                        break;
+                    case AnimationPlayType.APT_Playing:
+                        m_currentFrame = Math.Min(animation.Frames, m_currentFrame += dt * m_animationSpeed);
+                        break;
                 }
-                else
-                    m_currentFrame = Math.Min(animation.Frames, m_currentFrame += dt* m_animationSpeed);
             }
         }
 
@@ -73,15 +88,26 @@ namespace ShootyShootyBangBangEngine.Rendering
         public void PlayAnimation(string animationName, double animationSpeed, bool looping)
         {
             m_currentPlayingAnimation = animationName;
-            m_looping = looping;
+            m_animationPlayType = looping ? AnimationPlayType.APT_Looping : AnimationPlayType.APT_Playing;
             m_animationSpeed = animationSpeed;
+        }
+
+        public void SetAnimation(string animationName, int frame = 0)
+        {
+            m_currentPlayingAnimation = animationName;
+            m_animationPlayType = AnimationPlayType.APT_Paused;
+            if(m_animations.TryGetValue(m_currentPlayingAnimation, out var animation))
+                m_currentFrame = Math.Min(animation.Frames, frame);
         }
 
         void i_setCurrentFrame(int animationId)
         {
+            var yFac = 0.0f;
+            if (m_maxAnimations > 1)
+                yFac = ((float)animationId) / (m_maxAnimations - 1);
             var vec = new Vector2(
                 Helpers.MathHelpers.Lerp(0, 1.0f, (int)m_currentFrame * m_relFrameSize.X),
-                Helpers.MathHelpers.Lerp(1.0f - m_relFrameSize.Y, 0, (float)animationId / (m_maxAnimations-1)));
+                Helpers.MathHelpers.Lerp(1.0f - m_relFrameSize.Y, 0, yFac)- m_yCorrection);
             SetUvOffset(vec);
         }
     }

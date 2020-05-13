@@ -82,9 +82,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameObjects\Client\Ai\AiFactory.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateGoToPointTimed.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateTimedMoveBetweenPoints.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateMoveBetweenRandomPoints.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateWalkInCircle.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateGoToPoint.cs" />
+    <Compile Include="GameObjects\Client\Ai\AiStateMoveBetweenPoints.cs" />
     <Compile Include="GameObjects\Client\ClientCharacter.cs" />
     <Compile Include="GameObjects\Client\PlayerControlledCharacter.cs" />
     <Compile Include="GameObjects\Components\CharacterReplicator.cs" />
+    <Compile Include="Implementations\SSBBClientControllers.cs" />
+    <Compile Include="Implementations\SSBBRenderPipeline.cs" />
     <Compile Include="Networking\ClientServer\ClientnetPackets.cs" />
     <Compile Include="Networking\ClientServer\ServerNetPackets.cs" />
     <Compile Include="Networking\ClientServer\SharedNetPackets.cs" />

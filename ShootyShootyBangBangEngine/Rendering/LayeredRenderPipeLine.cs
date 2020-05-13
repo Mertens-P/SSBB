@@ -11,64 +11,48 @@ namespace ShootyShootyBangBangEngine.Rendering
     {
         struct Layer
         {
-            public string LayerName;
             public SortedDictionary<int, HashSet<Renderable>> Objects;
         }
         SortedDictionary<int, Layer> m_layers = new SortedDictionary<int, Layer>();
-        Dictionary<string, int> m_layerNameLookup = new Dictionary<string, int>();
 
-        public void AddLayer(string name, int depth)
+        private Layer i_addLayer(int depth)
         {
             if (m_layers.ContainsKey(depth))
                 throw new Exception("Adding a layer at the same depth as existing layer!!");
-            if(m_layerNameLookup.ContainsKey(name))
-                throw new Exception($"Layer {name} allready exists!!");
-            m_layers.Add(depth, new Layer() { LayerName = name, Objects = new SortedDictionary<int, HashSet<Renderable>>() });
-            m_layerNameLookup.Add(name, depth);
+            var layer = new Layer() { Objects = new SortedDictionary<int, HashSet<Renderable>>() };
+            m_layers.Add(depth, layer);
+            return layer;
         }
 
-        public void AddRenderable(Renderable obj, string layerName, int depthInLayer)
+        protected void i_addRenderable(Renderable obj, int layerDepth, int depthInLayer)
         {
-            if (m_layerNameLookup.TryGetValue(layerName, out int layerDepth))
-            {
-                if (m_layers.TryGetValue(layerDepth, out var layer))
-                {
-                    if (layer.Objects.TryGetValue(depthInLayer, out var objects))
-                        objects.Add(obj);
-                    else
-                        layer.Objects.Add(depthInLayer, new HashSet<Renderable>() { obj });
-                }
-                else
-                    throw new Exception($"Layer at depth {layerDepth} does not exists!!");
-            }
+            Layer layer;
+            if (!m_layers.TryGetValue(layerDepth, out layer))
+                layer = i_addLayer(layerDepth);
+            if (layer.Objects.TryGetValue(depthInLayer, out var objects))
+                objects.Add(obj);
             else
-                throw new Exception($"Layer {layerName} does not exists!!");
+                layer.Objects.Add(depthInLayer, new HashSet<Renderable>() { obj });
         }
 
-        public void RemoveRenderable(Renderable obj, string layerName)
+        protected void i_removeRenderable(Renderable obj, int layerDepth)
         {
-            if (m_layerNameLookup.TryGetValue(layerName, out int layerDepth))
+            if (m_layers.TryGetValue(layerDepth, out var layer))
             {
-                if (m_layers.TryGetValue(layerDepth, out var layer))
+                foreach(var depth in layer.Objects)
                 {
-                    foreach(var depth in layer.Objects)
-                    {
-                        if (depth.Value.Remove(obj))
-                            return;
-                    }
+                    if (depth.Value.Remove(obj))
+                        return;
                 }
             }
         }
 
-        public void RemoveRenderable(Renderable obj, string layerName, int depthInLayer)
+        protected  void i_removeRenderable(Renderable obj, int layerDepth, int depthInLayer)
         {
-            if (m_layerNameLookup.TryGetValue(layerName, out int layerDepth))
+            if (m_layers.TryGetValue(layerDepth, out var layer))
             {
-                if (m_layers.TryGetValue(layerDepth, out var layer))
-                {
-                    if (layer.Objects.TryGetValue(depthInLayer, out var objects))
-                        objects.Remove(obj);
-                }
+                if (layer.Objects.TryGetValue(depthInLayer, out var objects))
+                    objects.Remove(obj);
             }
         }
 

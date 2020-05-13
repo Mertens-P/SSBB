@@ -1,7 +1,7 @@
-﻿using OpenTK;
-using ShootyShootyBangBangEngine.GameObjects;
+﻿using ShootyShootyBangBangEngine.GameObjects;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,9 @@ namespace ShootyShootyBangBang.GameObjects.ClientServer
 {
     class SSBBCharacter : GameObject
     {
-        protected float m_movementSpeed = 1000.0f;
+        protected float m_movementSpeed = 500.0f;
+
+        public float GetMovementSpeed() { return m_movementSpeed; }
 
         public SSBBCharacter(Vector2 position, ComponentReplicator.PeerType peerType)
         {

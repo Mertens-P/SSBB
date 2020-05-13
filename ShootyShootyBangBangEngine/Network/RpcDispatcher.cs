@@ -31,24 +31,32 @@ namespace ShootyShootyBangBangEngine.Network
         public static OnPacket packetDelegate;
         public static void Execute(Stream stream, RPCDispatcher dispatcher, RPCData dataTemplate)
         {
-            object deserializedObject;
+            object deserializedObject = null;
             do
             {
-                if (stream.Position >= stream.Length)
+                try
+                {
+                    if (stream.Position >= stream.Length)
                     break;
 
-                deserializedObject = Serialization.GetGlobalSerializer().Deserialize(stream);
+                    deserializedObject = Serialization.GetGlobalSerializer().Deserialize(stream);
 
-                Type t = deserializedObject.GetType();
-                if (dispatcher.Functions.ContainsKey(t))
-                {
-                    if (packetDelegate != null)
-                        packetDelegate.Invoke(t);
-                    dataTemplate.DeserializedObject = deserializedObject;
-                    dispatcher.Functions[t](dataTemplate);
+                    Type t = deserializedObject.GetType();
+                    if (dispatcher.Functions.ContainsKey(t))
+                    {
+                        if (packetDelegate != null)
+                            packetDelegate.Invoke(t);
+                        dataTemplate.DeserializedObject = deserializedObject;
+                        dispatcher.Functions[t](dataTemplate);
+                    }
+                    else
+                        throw new Exception("RPC: Unrecognized type: " + t.ToString());
                 }
-                else
-                    throw new Exception("RPC: Unrecognized type: " + t.ToString());
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unreconized package!! - " + e);
+                    continue;
+                }
             } while (deserializedObject != null);
 
         }

@@ -1,11 +1,11 @@
-﻿using OpenTK;
-using ShootyShootyBangBang.Networking.ClientServer.NetPackets;
+﻿using ShootyShootyBangBang.Networking.ClientServer.NetPackets;
 using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects.Cameras;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Helpers;
 using ShootyShootyBangBangEngine.Network;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +15,9 @@ namespace ShootyShootyBangBang.Networking.Client
 {
     class ClientPacketHandler : PacketHandlerBase
     {
-        ClientControllers m_clControllers;
+        Implementations.SSBBClientControllers m_clControllers;
 
-        public void SetControllers(ClientControllers controllers)
+        public void SetControllers(Implementations.SSBBClientControllers controllers)
         {
             m_clControllers = controllers;
         }
@@ -37,8 +37,14 @@ namespace ShootyShootyBangBang.Networking.Client
         protected void OnSpawnPlayerServerPacket(RPCData data)
         {
             var packet = data.DeserializedObject as SpawnPlayerServerPacket;
-            //var playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers, packet.position, new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
-            var playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers, packet.position, new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+            GameObjects.Client.ClientCharacter playerCharacter = new GameObjects.Client.PlayerControlledCharacter(packet.id, m_clControllers.GetSSBBRenderPipeline(), MathHelpers.OpenTkVecToSystemVec(packet.position), new Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+            if (packet.aiType != GameObjects.Client.Ai.AiFactory.AiType.AT_None)
+            {
+                var aiComp = new ComponentAiSystem();
+                aiComp.AddState(GameObjects.Client.Ai.AiFactory.CreateBaseAiState(packet.aiType, playerCharacter.GetMovementSpeed()));
+                playerCharacter.GetComponents().AddComponent(aiComp);
+            }
+
             m_clControllers.GetRootScene().AddGameObject(playerCharacter);
 
             var camera = new FollowCamera(playerCharacter.GetId());
@@ -55,8 +61,7 @@ namespace ShootyShootyBangBang.Networking.Client
                 var repObj = m_clControllers.GetRootScene().GetGameObject(repData.CharacterId);
                 if (repObj == null)
                 {
-                    //repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("player", "Textures/Circle_blue.png"), m_clControllers.GetShaderManager().GetDefaultShader());
-                    repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers, new Vector2(), new OpenTK.Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
+                    repObj = new GameObjects.Client.ClientCharacter(repData.CharacterId, m_clControllers.GetSSBBRenderPipeline(), new Vector2(), new Vector2(32, 32), m_clControllers.GetTextureManager().GetOrCreateTexture("arrow", "Textures/Arrow.png"), m_clControllers.GetShaderManager().GetDefaultShader());
                     m_clControllers.GetRootScene().AddGameObject(repObj);
                 }
                 var replicator = repObj.GetComponents().GetComponent<ComponentReplicator>();

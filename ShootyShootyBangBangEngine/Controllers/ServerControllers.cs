@@ -55,11 +55,11 @@ namespace ShootyShootyBangBangEngine.Controllers
             Net.DisconnectConnection(connectionId);
         }
 
-        public ServerControllers(PacketHandlerServer packetHandler)
+        public ServerControllers(PacketHandlerServer packetHandler, string upnpIdent, int port, int maxConnections = 64, bool enableUPnP = true)
         {
             try
             {
-                m_netServer = new NetServer("CardGame", 4805, 64, false);
+                m_netServer = new NetServer(upnpIdent, port, maxConnections, enableUPnP);
                 m_netServer.OnStatusChanged += netServer_OnStatusChanged;
                 m_netServer.OnMessage += netServer_OnMessage;
                 packetHandler.Initialize(m_netServer.RpcDispatcher);

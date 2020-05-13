@@ -1,8 +1,8 @@
-﻿using OpenTK;
-using ShootyShootyBangBangEngine.Controllers;
+﻿using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Rendering;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,21 +13,19 @@ namespace ShootyShootyBangBang.GameObjects.Client
     class ClientCharacter : ClientServer.SSBBCharacter
     {
         TexturedQuad m_visual;
-        public ClientCharacter(RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader, ComponentReplicator.PeerType peertype)
+        public ClientCharacter(Implementations.SSBBRenderPipeline pipeline, Vector2 position, Vector2 dimensions, Texture texture, Shader shader, ComponentReplicator.PeerType peertype)
             :base(position, peertype)
         {
             m_visual = new TexturedQuad(dimensions, texture, shader);
-            var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
-            renderPipeLine.AddRenderable(m_visual, "Characters", 0);
+            pipeline.AddRenderable(m_visual, Implementations.SSBBRenderPipeline.LayerIdentifiers.LI_Characters, 0);
         }
 
-        public ClientCharacter(Guid id, RenderControllers controllers, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
+        public ClientCharacter(Guid id, Implementations.SSBBRenderPipeline pipeline, Vector2 position, Vector2 dimensions, Texture texture, Shader shader)
             : base(position, ComponentReplicator.PeerType.PT_Remote)
         {
             SetId(id);
             m_visual = new TexturedQuad(dimensions, texture, shader);
-            var renderPipeLine = controllers.GetRenderPipeline() as LayeredRenderPipeline;
-            renderPipeLine.AddRenderable(m_visual, "Characters", 0);
+            pipeline.AddRenderable(m_visual, Implementations.SSBBRenderPipeline.LayerIdentifiers.LI_Characters, 0);
         }
 
         public override void OnUpdate(double dt, BaseControllers controllers)
