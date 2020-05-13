@@ -24,7 +24,7 @@ namespace ShootyShootyBangBang
             commandLineParser.Parse(args);
 
             int port = 4805;
-            if (!int.TryParse(commandLineParser.GetValueForArgument("-port"), out port))
+            if (!int.TryParse(commandLineParser.GetValueForArgument("-Port"), out port))
                 port = 4805;
 
             InitializeSerializer();
@@ -37,7 +37,7 @@ namespace ShootyShootyBangBang
             if (commandLineParser.IsArgumentSet("-Client"))
             {
                 var clPacketHandler = new Networking.Client.ClientPacketHandler();
-                string ip = commandLineParser.GetValueForArgument("-ip");
+                string ip = commandLineParser.GetValueForArgument("-Ip");
                 if(string.IsNullOrEmpty(ip))
                     ip = "127.0.0.1";
 
