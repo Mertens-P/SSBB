@@ -20,7 +20,6 @@ namespace ShootyShootyBangBang.GameObjects.Components
             public float Angle;
         }
 
-
         public CharacterReplicator(PeerType peerType)
             :base(peerType)
         {
@@ -30,6 +29,12 @@ namespace ShootyShootyBangBang.GameObjects.Components
         {
             var transComp = ownerEnt.GetComponents().GetComponent<ComponentTransform>();
             return new CharacterReplicationData() { CharacterId = ownerEnt.GetId(), Position = MathHelpers.SytemVecToOpenTkVec(transComp.GetPosition()), Angle = transComp.GetAngle() };
+        }
+
+        public override void Tick(BaseControllers controllers, GameObject owner, double dt)
+        {
+            base.Tick(controllers, owner, dt);
+            if (GetPeerType() == PeerType.PT_Local) return;
         }
 
         public override void OnReplicate(BaseControllers controllers, GameObject ownerEnt, ComponentReplicator.ReplicationData replicationData)

@@ -33,8 +33,9 @@ Local server and create new clients for all bot types
 - Add interpolation to GameObjects/Components/CharacterReplicator.cs, so remote characters move smoothly.
 - Use a lag simulator (eg clumsy https://jagt.github.io/clumsy/download.html ) to simulate latency, packet loss and jitter and see what kind of effect that has on the remote players.
 - Add extrapolation to minimize the effects of latency, packet loss and jitter.
+- Try different things to get it as accurate as possible (take angular velocity into account?)
 - Create different implementations which maximize accuracy or speed.
-- Change game mechanics and see what kind of effect that has on simulations. (eg, different movement speeds, limited rotation speed, velocity ramp up/down, slower server tick etc)
+- Change game mechanics and see what kind of effect that has on simulations. (eg, different movement speeds, limited rotation speed, velocity ramp up/down, limit angle between look vector and movement vector, slower server tick etc)
 - Add more bots which perform the type of behavior you want to optimize your project for.
 - Add more bots which perform the the worst case type of behavior you want to optimize your project for, or even behavior that should be impossible.
 
