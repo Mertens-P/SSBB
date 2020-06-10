@@ -71,7 +71,7 @@ namespace ShootyShootyBangBang
             m_serverGame = new ShootyShootyBangBangServerGame(svControllers);
             Stopwatch svUpdateSw = new Stopwatch();
             long tickDuration = 0;
-            double tarTickTime = 1.0 / 30.0;
+            double tarTickTime = 1.0 / 15.0;
             long tarFrameTimeInMs = (long)(tarTickTime * 1000.0);
 
             while (m_serverGame.GetisRunning())
