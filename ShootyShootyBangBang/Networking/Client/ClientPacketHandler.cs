@@ -1,15 +1,10 @@
 ﻿using ShootyShootyBangBang.Networking.ClientServer.NetPackets;
-using ShootyShootyBangBangEngine.Controllers;
 using ShootyShootyBangBangEngine.GameObjects.Cameras;
 using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Helpers;
 using ShootyShootyBangBangEngine.Network;
 using System;
 using System.Numerics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShootyShootyBangBang.Networking.Client
 {

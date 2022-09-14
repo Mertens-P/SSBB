@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -10,7 +8,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using ShootyShootyBangBangEngine.Helpers.Threading;
-using ShootyShootyBangBangEngine.Helpers;
 
 namespace ShootyShootyBangBangEngine.Network
 {

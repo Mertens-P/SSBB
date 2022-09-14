@@ -4,10 +4,6 @@ using ShootyShootyBangBangEngine.GameObjects.Components;
 using ShootyShootyBangBangEngine.Rendering;
 using System;
 using System.Numerics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShootyShootyBangBang.GameObjects.Client
 {
@@ -24,10 +20,10 @@ namespace ShootyShootyBangBang.GameObjects.Client
         protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
             var clientControllers = controllers as ClientControllers;
-            Vector2 dir = new Vector2();
             var transform = GetComponents().GetComponent<ComponentTransform>();
             if (!GetComponents().HasComponent<ComponentAiSystem>())
             {
+                Vector2 dir = new Vector2();
                 if (clientControllers.GetkeyboardState().IsKeyDown(Key.A)) dir.X = -1;
                 if (clientControllers.GetkeyboardState().IsKeyDown(Key.D)) dir.X = 1;
                 if (clientControllers.GetkeyboardState().IsKeyDown(Key.W)) dir.Y = 1;

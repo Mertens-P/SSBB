@@ -1,12 +1,6 @@
-﻿using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using ShootyShootyBangBangEngine.Controllers;
+﻿using OpenTK.Graphics.OpenGL;
 using System;
 using System.Numerics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShootyShootyBangBangEngine.Rendering
 {
