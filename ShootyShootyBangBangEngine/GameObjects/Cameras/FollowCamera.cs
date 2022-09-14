@@ -25,7 +25,6 @@ namespace ShootyShootyBangBangEngine.GameObjects.Cameras
 
         protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
-            base.i_onUpdate(dt, controllers);
             var followObj = controllers.GetRootScene().GetGameObject(m_followObj);
             if (followObj != null)
             {

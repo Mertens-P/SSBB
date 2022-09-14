@@ -30,7 +30,6 @@ namespace ShootyShootyBangBang.GameObjects.Client
 
         protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
-            base.i_onUpdate(dt, controllers);
             var transComp = GetComponents().GetComponent<ComponentTransform>();
             m_visual.SetPosition(transComp.GetPosition());
             m_visual.SetAngle(transComp.GetAngle());
