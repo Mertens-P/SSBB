@@ -21,7 +21,7 @@ namespace ShootyShootyBangBang.GameObjects.Client
             SetId(id);
         }
 
-        public override void OnUpdate(double dt, BaseControllers controllers)
+        protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
             var clientControllers = controllers as ClientControllers;
             Vector2 dir = new Vector2();
@@ -56,7 +56,7 @@ namespace ShootyShootyBangBang.GameObjects.Client
                 m_lastAngle = transform.GetAngle();
                 m_lastPos = transform.GetPosition();
             }
-            base.OnUpdate(dt, controllers);
+            base.i_onUpdate(dt, controllers);
         }
 
         bool i_isDirty(ComponentTransform trans)

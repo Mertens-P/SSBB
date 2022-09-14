@@ -38,7 +38,7 @@ namespace ShootyShootyBangBangEngine.GameObjects
         public virtual void OnUpdate(double dt, BaseControllers controllers)
         {
             foreach (var gameObjectKv in m_gameObjects)
-                gameObjectKv.Value.OnUpdate(dt, controllers);
+                gameObjectKv.Value.Update(dt, controllers);
             foreach (var kv in m_addQueue)
                 m_gameObjects[kv.Value.GetId()] = kv.Value;
         }

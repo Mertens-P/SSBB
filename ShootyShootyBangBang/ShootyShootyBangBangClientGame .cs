@@ -1,14 +1,8 @@
 ﻿using OpenTK.Input;
 using ShootyShootyBangBang.GameObjects.Client.Ai;
-using ShootyShootyBangBangEngine;
-using ShootyShootyBangBangEngine.GameObjects.Cameras;
 using ShootyShootyBangBangEngine.Rendering;
-using System;
 using System.Numerics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ShootyShootyBangBangEngine.Helpers;
 
 namespace ShootyShootyBangBang
@@ -18,7 +12,7 @@ namespace ShootyShootyBangBang
         Implementations.SSBBClientControllers m_clientControllers;
         TexturedQuad m_background;
         List<TexturedQuad> m_dirtPatches = new List<TexturedQuad>();
-        AiFactory.AiType m_aiType = GameObjects.Client.Ai.AiFactory.AiType.AT_None;
+        AiFactory.AiType m_aiType = AiFactory.AiType.AT_None;
 
         public ShootyShootyBangBangClientGame(Implementations.SSBBClientControllers controllers, AiFactory.AiType aiType)
             :base(controllers)
@@ -35,10 +29,10 @@ namespace ShootyShootyBangBang
             m_background.SetRepeating(10.0f);
             m_clientControllers.GetSSBBRenderPipeline().AddRenderable(m_background, Implementations.SSBBRenderPipeline.LayerIdentifiers.LI_Background, 0);
 
-            i_createDirtPatch(new Vector2(-400, 300), new Vector2(400,400));
-            i_createDirtPatch(new Vector2(0, -100), new Vector2(1200, 32));
-            i_createDirtPatch(new Vector2(0, -200), new Vector2(1200, 32));
-            i_createDirtPatch(new Vector2(0, -300), new Vector2(1200, 32));
+            m_dirtPatches.Add(i_createDirtPatch(new Vector2(-400, 300), new Vector2(400,400)));
+            m_dirtPatches.Add(i_createDirtPatch(new Vector2(0, -100), new Vector2(1200, 32)));
+            m_dirtPatches.Add(i_createDirtPatch(new Vector2(0, -200), new Vector2(1200, 32)));
+            m_dirtPatches.Add(i_createDirtPatch(new Vector2(0, -300), new Vector2(1200, 32)));
 
             var dirtPatch = new TexturedQuad(new Vector2(450, 450), m_clientControllers.GetTextureManager().GetOrCreateTexture("dirtCircle", "Textures/DirtCircle.png"), m_clientControllers.GetShaderManager().GetDefaultShader());
             dirtPatch.SetPosition(new Vector2(100, 300));
@@ -54,12 +48,13 @@ namespace ShootyShootyBangBang
                 m_isRunning = false;
         }
 
-        void i_createDirtPatch(Vector2 position, Vector2 dimensions)
+        TexturedQuad i_createDirtPatch(Vector2 position, Vector2 dimensions)
         {
             var dirtPatch = new TexturedQuad(dimensions, m_clientControllers.GetTextureManager().GetOrCreateTexture("dirt", "Textures/dirt.jpg"), m_clientControllers.GetShaderManager().GetDefaultShader());
             dirtPatch.SetUvScale(dimensions / new Vector2(400,400));
             dirtPatch.SetPosition(position);
             m_clientControllers.GetSSBBRenderPipeline().AddRenderable(dirtPatch, Implementations.SSBBRenderPipeline.LayerIdentifiers.LI_Background, 1);
+            return dirtPatch;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ShootyShootyBangBangEngine.GameObjects.Cameras
         Vector2? m_topLeftExtend;
         Vector2? m_botRightExtend;
 
-        public FollowCamera(Guid followObjId): base(new Vector2()) { m_followObj = followObjId; }
+        public FollowCamera(Guid followObjId, float zoom): base(new Vector2()) { m_followObj = followObjId; SetZoomFactor(zoom); }
 
         public void SetExtends(Vector2? topLeft, Vector2? BotRight)
         {
@@ -23,9 +23,9 @@ namespace ShootyShootyBangBangEngine.GameObjects.Cameras
             m_botRightExtend = BotRight;
         }
 
-        public override void OnUpdate(double dt, BaseControllers controllers)
+        protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
-            base.OnUpdate(dt, controllers);
+            base.i_onUpdate(dt, controllers);
             var followObj = controllers.GetRootScene().GetGameObject(m_followObj);
             if (followObj != null)
             {

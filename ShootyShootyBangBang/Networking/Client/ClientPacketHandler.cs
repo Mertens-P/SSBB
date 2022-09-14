@@ -47,7 +47,7 @@ namespace ShootyShootyBangBang.Networking.Client
 
             m_clControllers.GetRootScene().AddGameObject(playerCharacter);
 
-            var camera = new FollowCamera(playerCharacter.GetId());
+            var camera = new FollowCamera(playerCharacter.GetId(), 3);
             camera.SetExtends(new Vector2(-800, -600), new Vector2(800, 600));
             m_clControllers.GetRootScene().AddGameObject(camera);
             m_clControllers.SetCamera(camera);

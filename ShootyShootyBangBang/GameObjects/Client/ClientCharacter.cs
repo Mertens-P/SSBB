@@ -28,9 +28,9 @@ namespace ShootyShootyBangBang.GameObjects.Client
             pipeline.AddRenderable(m_visual, Implementations.SSBBRenderPipeline.LayerIdentifiers.LI_Characters, 0);
         }
 
-        public override void OnUpdate(double dt, BaseControllers controllers)
+        protected override void i_onUpdate(double dt, BaseControllers controllers)
         {
-            base.OnUpdate(dt, controllers);
+            base.i_onUpdate(dt, controllers);
             var transComp = GetComponents().GetComponent<ComponentTransform>();
             m_visual.SetPosition(transComp.GetPosition());
             m_visual.SetAngle(transComp.GetAngle());
